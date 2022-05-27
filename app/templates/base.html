@@ -9,19 +9,24 @@
 
 	{% block content %}
     <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
+        <div class="row justify-content-center">
+            <div class="col-8">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-info" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% include 'navbar.html' %}
 
-        {# application content needs to be provided in the content block #}
-        
-		{% include 'navbar.html' %}
-		
-		{% block app_content %}{% endblock %}
+                <div class="row justify-content-center">
+                        {% block app_content %}{% endblock %}
+                </div>
+
+            </div>
+        </div>
     </div>
 {% endblock %}
 </html>

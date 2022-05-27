@@ -3,7 +3,7 @@ Built with Flask
 
 ## <a href="https://getbootstrap.com/docs/5.2/components/buttons/">BUTTONS</a> in Bootstrap
 <code>
-html
+buttons
 </code>
 
 ```html
@@ -15,6 +15,12 @@ html
 <button type="button" class="btn btn-info">Info</button>
 <button type="button" class="btn btn-light">Light</button>
 <button type="button" class="btn btn-dark">Dark</button>
-
 <button type="button" class="btn btn-link">Link</button>
+```
+<code>
+buttons as links
+</code>
+
+```html
+<a class="btn btn-primary" href={{ url_for('login') }} type="button">Login</a>
 ```

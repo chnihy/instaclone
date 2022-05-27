@@ -40,4 +40,7 @@ def login():
 		return render_template('index.html')
 	return render_template('login.html')
 
-
+@app.route('/profile')
+@app.route('/<user>')
+def profile(user="jj_doe85"):
+	return render_template('profile.html', user=user)
