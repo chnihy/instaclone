@@ -1,9 +1,21 @@
+<!--main column:-->
+<!--Search bar-->
+<!--Feed-->
+
+<!--right column:-->
+<!--my profile pic, link to my profile-->
+
 {% extends 'base.html' %}
+{% block title %}home{% endblock %}
 
-{% block title %}
-	Home
-{% endblock title %}
+{% block app_content %}
 
-{% block content %}
-	Hello from Index.html
-{% endblock content %}
+	<div class="row">
+		<div class="col-md-8 offset-md-1">
+		  Feed will show up here
+		</div>
+		<div class="col">
+		  User links show up here
+		</div>
+	</div>
+{% endblock  %}

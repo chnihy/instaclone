@@ -1,21 +1,16 @@
-# SQL_Alchemy Boiler Plate
+# Instagram Clone 
+Built with Flask
 
-## Requirements
-```bash
-pip3 install -r requirements.txt
-```
+## <a href="https://getbootstrap.com/docs/5.2/components/buttons/">BUTTONS</a> in Bootstrap
+```html
+<button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-secondary">Secondary</button>
+<button type="button" class="btn btn-success">Success</button>
+<button type="button" class="btn btn-danger">Danger</button>
+<button type="button" class="btn btn-warning">Warning</button>
+<button type="button" class="btn btn-info">Info</button>
+<button type="button" class="btn btn-light">Light</button>
+<button type="button" class="btn btn-dark">Dark</button>
 
-## To Run
-Create db in Flask shell
-```bash
-flask shell
-db.create_all()
-```
-You should see 'data.db' show up in your file manager
-
-Run in debug mode
-```bash
-export FLASK_APP=main.py
-export FLASK_ENV=development
-flask run
+<button type="button" class="btn btn-link">Link</button>
 ```
