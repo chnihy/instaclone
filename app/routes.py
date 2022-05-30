@@ -1,41 +1,22 @@
-# route for login
-
-# route for forgotten password
-
-# route for signup
-
-# home/feed/index route
-
-# route for view profile
-
-# route for edit profile
-
-# route for viewing a post
-
-# route for creating/editing a post
-
-# route to view my messages
-
-# route to create a new message
-
-# route for searching
-
 from app import app, db
-from flask import Flask, render_template, url_for, request, flash, redirect
+from flask import Flask, render_template, url_for, request, flash, redirect, send_from_directory
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.urls import url_parse
-from app.models import User
+from werkzeug.utils import secure_filename
+from app.models import User, Post
 from app.forms import LoginForm, RegistrationForm, EditProfile
+import os
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User}
+    return {'db': db, 'User': User, "Post": Post}
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
 	return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -80,15 +61,49 @@ def register():
 	return render_template('register.html', title='Register', form=form)
 
 
+@app.route('/newpost', methods=['POST'])
+def newpost():
+	#--- Image Upload ---#
+	def allowed_file(filename):
+		return '.' in filename and \
+			filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	
+	# check if the post request has the file part
+	if 'file' not in request.files:
+		flash('No file part')
+		return redirect(request.url)
+	file = request.files['file']
+	
+	# If the user does not select a file, the browser submits an
+	# empty file without a filename.
+	if file.filename == '':
+		flash('No selected file')
+		return redirect(request.url)
+	
+	# Upload file to static
+	if file and allowed_file(file.filename):
+		filename = secure_filename(file.filename)
+		file.save(os.path.join(basedir + app.config['UPLOAD_FOLDER']) + filename)
+
+		# Add post to db
+		caption_text = request.form['caption_text']
+		image_url = "./static/images/" + filename
+		new_post = Post(image_url=image_url, caption=caption_text, author=current_user)
+		db.session.add(new_post)
+		db.session.commit()
+		# Add tags to db
+		flash('You Post Has Been Created! ')
+		return redirect(url_for('index'))
+
+
+
 @app.route('/<username>', methods=['GET','POST'])
 @login_required
 def user(username):
 	user = User.query.filter_by(username=username).first_or_404()
-	posts = [
-		{'author': user, 'body': 'Test post #1'},
-		{'author': user, 'body': 'Test post #2'}
-	]
-	return render_template('user.html', user=user, posts=posts, )
+	posts = user.posts
+	return render_template('user.html', user=user, posts=user.posts)
 
 @app.route('/edit_profile', methods=["GET","POST"])
 @login_required

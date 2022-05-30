@@ -1,0 +1,56 @@
+<!--new post upload modal-->
+<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-keyboard="true" data-bs-target="#new-post-modal">New Post</a>
+	<div class="modal fade" id="new-post-modal" tabindex="-1" aria-labelledby="new-post-modal-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header" >
+					<h5 class="modal-title" id="new-post-modal-label">Create a New Post</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+					<img src="../static/images/fileupload.png" alt="select a file">
+					<form method=post enctype=multipart/form-data action={{ url_for('newpost') }}>
+						<input type=file name=file>
+				</div>
+				<div class="modal-footer">
+					<button type=button class="btn btn-primary" data-bs-target="#new-post-caption" data-bs-toggle="modal">Upload</button>
+					<!--<input type=submit value=Upload class="btn btn-primary" data-bs-target="#new-post-caption" data-bs-toggle="modal">-->
+				<!--</form>-->
+				</div>	
+			</div>
+		</div>
+	</div>
+	<!--new post caption modal-->
+	<div class="modal fade" id="new-post-caption" tabindex="-1" aria-labelledby="new-post-caption-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="new-post-caption">Caption Your Post</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col">
+							Image goes here
+						</div>
+
+						<div class="col">										
+
+							<div class="mb-3">
+							<!--<form>-->
+								<label for="caption_text" class="col-form-label"><b>User Name</b></label>
+								<input type="text" class="form-control" name="caption_text" id="caption_text" placeholder="Say something..."></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+					<input type="submit" value="Post" class="btn btn-primary">
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -9,19 +9,19 @@ def load_user(id):
 
 class User(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(20), unique=True, nullable=False)
+	username = db.Column(db.String(20), unique=True, index=True, nullable=False)
 	password_hash = db.Column(db.String(128))
-	email = db.Column(db.String(120), unique=True, nullable=False)
-	firstname = db.Column(db.String(20), unique=False, nullable=False)
-	lastname = db.Column(db.String(20), unique=False, nullable=False)
-	bio = db.Column(db.String(80), unique=False, nullable=True)
-	website = db.Column(db.String(80), unique=False, nullable=True)
+	email = db.Column(db.String(120), unique=True, index=True, nullable=False)
+	firstname = db.Column(db.String(20), unique=False)
+	lastname = db.Column(db.String(20), unique=False)
+	bio = db.Column(db.String(80), unique=False)
+	website = db.Column(db.String(80), unique=False)
 
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 
 
 	def __repr__(self):
-		return '<User %r>' % self.username
+		return '<User {}> <password {}>'.format(self.username, self.password_hash)
 
 	def set_password(self, password):
 		self.password_hash = generate_password_hash(password)
@@ -32,9 +32,10 @@ class User(UserMixin, db.Model):
 
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	body = db.Column(db.String(140))
+	image_url = db.Column(db.String(140))
+	caption = db.Column(db.String(140))
 	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 	def __repr__(self):
-		return '<Post {}>'.format(self.body)
+		return '<Post img_url: {}> <Caption: {}'.format(self.image_url, )
