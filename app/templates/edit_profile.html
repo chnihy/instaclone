@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block app_content %}
+	
+<h1>Edit Profile</h1>
+<form action="" method="post">
+	{{ form.hidden_tag() }}
+	<p>
+		{{ form.username.label }}<br>
+		{{ form.username(placeholder=current_user.username, size=40) }}<br>
+		{% for error in form.username.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+	</p>
+	<p>
+		{{ form.email.label }}<br>
+		{{ form.email(placeholder=current_user.email, size=40) }}<br>
+		{% for error in form.email.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+	</p>
+	<p>
+		{{ form.firstname.label }}<br>
+		{{ form.firstname(placeholder=current_user.firstname, size=40) }}<br>
+		{% for error in form.firstname.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+	</p>
+	<p>
+		{{ form.lastname.label }}<br>
+		{{ form.lastname(placeholder=current_user.lastname, size=40) }}<br>
+		{% for error in form.lastname.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+	</p>
+	<p>
+		{{ form.website.label }}<br>
+		{{ form.website(placeholder=current_user.website, size=40) }}<br>
+		{% for error in form.website.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+	</p>
+	<p>
+		{{ form.bio.label }} <br>
+		{{ form.bio(placeholder=current_user.bio, size=40) }}<br>
+		{% for error in form.bio.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+	</p>
+	<p>{{ form.submit() }}</p>
+</form>
+
+{% endblock app_content %}

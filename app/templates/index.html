@@ -11,7 +11,7 @@
 {% block app_content %}
 
 	<div class="row">
-		<div class="col">
+		<div class="col" id="homefeed">
 		  <h4>Feed will show up here</h4>
 			<br>
 			<br>
@@ -71,10 +71,12 @@
 		<div class="col">
 			<div class="row">
 				<div class="col">
-					<img src="../static/images/avatar.png" width="100">
+					<a href={{ url_for('user', username=current_user.username) }}><img src="../static/images/avatar.png" width="100"></a>
 				</div>
 				<div class="col">
-					<a href={{ url_for('profile') }}>My Profile</a>
+					<a href={{ url_for('user', username=current_user.username) }}>My Profile</a>
+					<a href="{{ url_for('logout') }}">Logout</a>
+					</div>
 				</div>
 			</div>
 		</div>
