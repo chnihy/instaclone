@@ -7,6 +7,9 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ALLOWED_EXTENSIONS = ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'svg']
+    
     UPLOAD_FOLDER = '/static/images/'
-    ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+    AVATAR_UPLOAD_FOLDER = '/static/images/avatars/'
+    DEFAULT_AVATAR_URL = '/static/images/avatars/avatar.svg'
 

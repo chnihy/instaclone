@@ -1,0 +1,46 @@
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+•••
+</button>
+{% if post.author.username == current_user.username %}
+<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+	<li>
+		<form action="{{ url_for('delete_post') }}" method="post">
+			<input type="hidden" id="post_id" name="post_id" value= {{ post.id }}>
+			<input type="submit" class="dropdown-item" value="Delete Post">
+		</form>
+	</li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Edit Post</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Go to Post</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Share to...</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Copy Link</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Embed</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Cancel</a></li>
+</ul>
+
+{% endif %}
+{% if post.author.username != current_user.username %}
+
+<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Go to Post</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Share to...</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Copy Link</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Embed</a></li>
+	<li><hr class="dropdown-divider"></li> 
+	<li><a class="dropdown-item" href={{ url_for('index')}}>Cancel</a></li>
+
+</ul>
+{% endif %}
+
+
+
+</div>

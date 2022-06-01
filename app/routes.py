@@ -3,19 +3,32 @@ from flask import Flask, render_template, url_for, request, flash, redirect, sen
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
-from app.models import User, Post
+from app.models import User, Post, Comment
 from app.forms import LoginForm, RegistrationForm, EditProfile
 import os
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, "Post": Post}
+	return {'db': db, 'User': User, "Post": Post, "Comment": Comment}
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-	return render_template('index.html')
+	all_users = User.query.all()
+	all_posts_all_users = []
+	for user in all_users:
+		user_posts_query = user.posts
+		for post in user_posts_query:
+			all_posts_all_users.append(post)
+	'''
+	for post in all_posts_all_users:
+		print("post id {}".format(post.id))
+		print("post image_url {}".format(post.image_url))
+		print("post author {}".format(post.author))
+		print("post timestamp {}".format(post.timestamp))'''
+
+	return render_template('index.html', all_posts_all_users=all_posts_all_users)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -26,7 +39,7 @@ def login():
 	if form.validate_on_submit():
 		user = User.query.filter_by(username=form.username.data).first()
 		if user is None or not user.check_password(form.password.data):
-			flash('Invalid username or password')
+			flash('Invalid username or password', category="error")
 			return redirect(url_for('login'))
 		login_user(user, remember=form.remember_me.data)
 		next_page = request.args.get('next')
@@ -67,6 +80,7 @@ def newpost():
 	def allowed_file(filename):
 		return '.' in filename and \
 			filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+	
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	
 	# check if the post request has the file part
@@ -92,13 +106,18 @@ def newpost():
 		new_post = Post(image_url=image_url, caption=caption_text, author=current_user)
 		db.session.add(new_post)
 		db.session.commit()
+		
 		# Add tags to db
 		flash('You Post Has Been Created! ')
+		#return redirect(url_for('new_post_caption'), image_url=image_url)
+		username=current_user.username
+		return redirect(url_for('user', username=username))
+	
+	else:
+		flash('There was a problem with your upload - please try again')
 		return redirect(url_for('index'))
 
-
-
-@app.route('/<username>', methods=['GET','POST'])
+@app.route('/<username>')
 @login_required
 def user(username):
 	user = User.query.filter_by(username=username).first_or_404()
@@ -134,6 +153,68 @@ def edit_profile():
 		form.website.data = current_user.website
 		form.bio.data = current_user.bio
 	return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+@app.route('/avatar_upload', methods=['POST'])
+def avatar_upload():
+	def allowed_file(filename):
+		return '.' in filename and \
+			filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+	
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	
+	# check if the post request has the file part
+	if 'file' not in request.files:
+		flash('No file part')
+		return redirect(url_for('user', username=current_user.username))
+	file = request.files['file']
+	
+	# If the user does not select a file, the browser submits an
+	# empty file without a filename.
+	if file.filename == '':
+		flash('No selected file')
+		return redirect(url_for('user', username=current_user.username))
+	
+	# Upload file to static
+	if file and allowed_file(file.filename):
+		filename = secure_filename(file.filename)
+		file.save(os.path.join(basedir + app.config['AVATAR_UPLOAD_FOLDER']) + filename)
+
+		# Add post to db
+		image_url = app.config['AVATAR_UPLOAD_FOLDER'] + filename
+		current_user.avatar_url = image_url
+		db.session.add(current_user)
+		db.session.commit()
+		
+		flash('Your profile photo has been updated!' )
+		return redirect(url_for('user', username=current_user.username))
+	
+	else:
+		flash('There was a problem with your upload - please try again')
+		return redirect(url_for('index'))
+
+@app.route('/delete_avatar', methods=["POST"])
+def delete_avatar():
+	flash('Your profile photo has been deleted!')
+	default_avatar_url = app.config['DEFAULT_AVATAR_URL']
+	# TODO delete old avatar
+	current_user.avatar_url = default_avatar_url
+	db.session.add(current_user)
+	db.session.commit()
+	return redirect(url_for('user', username=current_user.username))
+
+@app.route('/delete_post', methods=["POST"])
+def delete_post():
+	# TODO
+	print("Post ID: {}".format(request.form["post_id"]))
+	post_id = request.form['post_id']
+	# TODO this will need much more work
+	post = Post.query.filter_by(id=post_id).first()
+	#print("Post: {}".format(post))
+	db.session.delete(post)
+	db.session.commit()
+	flash('Post successfully deleted! ')
+	return redirect(url_for('index'))
+
 
 @app.route('/messages')
 @login_required

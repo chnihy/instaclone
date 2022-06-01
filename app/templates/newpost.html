@@ -13,11 +13,9 @@
 					<img src="../static/images/fileupload.png" alt="select a file">
 					<form method=post enctype=multipart/form-data action={{ url_for('newpost') }}>
 						<input type=file name=file>
-				</div>
-				<div class="modal-footer">
+					</div>
+					<div class="modal-footer">
 					<button type=button class="btn btn-primary" data-bs-target="#new-post-caption" data-bs-toggle="modal">Upload</button>
-					<!--<input type=submit value=Upload class="btn btn-primary" data-bs-target="#new-post-caption" data-bs-toggle="modal">-->
-				<!--</form>-->
 				</div>	
 			</div>
 		</div>
@@ -32,16 +30,12 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col">
-							Image goes here
-						</div>
 
 						<div class="col">										
 
 							<div class="mb-3">
-							<!--<form>-->
 								<label for="caption_text" class="col-form-label"><b>User Name</b></label>
-								<input type="text" class="form-control" name="caption_text" id="caption_text" placeholder="Say something..."></textarea>
+								<input type="text" class="form-control" name="caption_text" id="caption_text" placeholder="Add a caption and hashtags"></textarea>
 							</div>
 						</div>
 					</div>

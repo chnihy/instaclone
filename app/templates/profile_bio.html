@@ -1,0 +1,43 @@
+<div class="col-5" id="profile-bio-col">
+	<div class="row">
+		<div class="col">
+			<h2>{{ user.username }}</h2>
+		</div>
+		{% if user.username == current_user.username %}
+			
+		<!-- Edit Profile Modal -->
+		<div class="col" id="edit-profile">
+			<a class="btn btn-primary" href={{ url_for('edit_profile') }} type="button">Edit Profile</a>
+		</div>
+		<!--end edit profile modal-->
+		{% endif %}
+	</div>	
+
+	<div class="row">
+		<div class="col">
+			123 
+			<br>
+			Posts
+		</div>
+		<div class="col">
+			999 
+			<br>
+			Followers
+		</div>
+		<div class="col">
+			777 
+			<br>
+			Folowing
+		</div>
+	</div>	
+	<div class="row" id="user-profile-text">
+		<div class="col" id="user-fullname">
+				{{ user.firstname }} {{ user.lastname }}
+		</div>
+	</div>
+	<div class="row" id="user-bio">
+		<div class="col" id="user-bio">
+			{{ user.bio }}
+		</div>
+	</div>
+</div>

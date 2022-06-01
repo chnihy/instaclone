@@ -1,6 +1,19 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
 
 #homefeed{
-    text-align: center;
+    margin-top: 30px;
+}
+
+#home-mysection{
+    margin-left: 6px;
+}
+
+.homefeed-post{
+    margin-top: 30px;
+}
+
+#homefeed img{
+    width: 550px;
 }
 
 #new-post-modal{
@@ -9,6 +22,8 @@
 #new-post-modal-content{
     text-align: center;
 }
+
+
 
 
 /* MESSAGES */
@@ -43,6 +58,42 @@
 }
 
 #profile-photo-col{
-    margin-top: 5%;
+    text-align: center;
     
 }
+
+#avatar_row{
+    margin-bottom:30px;
+}
+
+/* Avatar */
+.avatar img {
+    margin-top: 20px;
+    width: 175px;
+    clip-path: circle(40% at 50% 50%);
+
+  }
+
+#homefeed-myavatar{
+    clip-path: circle(20% at 50% 50%);
+  }
+
+.post-avatar{
+    clip-path: circle(3% at 50% 50%);
+
+}
+
+
+/* POSTS */
+#post-image{
+    text-align: center;
+}
+
+#post-icon{
+    margin-left: 5%;
+}
+
+.comment-field{
+    height: 40%;
+}
+

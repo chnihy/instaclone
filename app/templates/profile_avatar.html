@@ -1,0 +1,61 @@
+<div class="col-4" id="profile-photo-col">
+	<div class="avatar">
+	<a href="#" data-bs-toggle="modal" data-bs-target="#profile-photo-modal">
+		<img src={{ current_user.avatar_url }}>
+	</a>
+	</div>
+
+	<!-- Edit Profile Photo Modal -->
+	<div class="modal fade" id="profile-photo-modal" tabindex="-1" aria-labelledby="profile-photo-modal-lable" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="profile-photo-modal-lable">Change Profile Picture</h5>
+				</div>
+				<div class="change-profile-photo">
+						<p><a href="#" data-bs-toggle="modal" data-bs-target="#upload-profile-photo-modal">Upload New Photo</a></p>
+						<p><a href="#" data-bs-toggle="modal" data-bs-target="#delete-profile-photo-modal">Delete Current Photo</a></p>
+						<p><a href="#" data-bs-dismiss="modal">Cancel</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--upload profile photo modal-->
+	<div class="modal fade" id="upload-profile-photo-modal" tabindex="-1" aria-labelledby="upload-profile-photo-modal-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" >
+					<h5 class="modal-title" id="upload-profile-photo-modal-label">Upload a New Photo</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<img src="../static/images/fileupload.png" alt="select a file">
+					<form method=post enctype=multipart/form-data action={{ url_for('avatar_upload') }}>
+						<input type=file name=file>
+
+				</div>
+				<div class="modal-footer">
+						<input type="submit" value="Upload" class="btn btn-primary" data-bs-toggle="modal">
+					</form>
+				</div>	
+			</div>
+		</div>
+	</div>
+	<!--delete profile photo modal-->
+	<div class="modal fade" id="delete-profile-photo-modal" tabindex="-1" aria-labelledby="delete-profile-photo-modal-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body" >
+					Are you sure you want to delete your profile photo?
+					</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        			<form method="post" action={{ url_for('delete_avatar') }}>
+						<input type="submit" value="Delete" class="btn btn-primary">
+					</form>
+				</div>	
+			</div>
+		</div>
+	</div>
+
+</div>

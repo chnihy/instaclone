@@ -1,0 +1,51 @@
+{% for post in posts %}
+	<div class="col-4" id="user-feed">
+			<p>
+			<!--Post Modal -->
+			<a href="#" data-bs-toggle="modal" data-bs-target="#post-modal-{{post.id}}">
+				<img src={{ post.image_url }} alt="post image", height="250", width="250", margin="10px"></a><br>
+					
+					<div class="modal fade" id="post-modal-{{post.id}}" tabindex="-1" aria-labelledby="post-modal-{{post.id}}-label" aria-hidden="true">
+						<div class="modal-dialog modal-xl modal-dialog-scrollable">
+							<div class="modal-content">
+								<div class="modal-header">
+									
+									{% include 'post_options.html' %} 
+								</div>
+								<div class="modal-body">
+									<div class="row ">
+										<div class="col-8" id="post-image">
+											<img src={{post.image_url}} alt="post image", height="500"></div>
+										<div class="col" id="post-caption">
+											<!--avatar-->
+											Avatar |
+											<a href={{ url_for('user', username=user.username) }}>{{ user.username}}</a> 
+											| following/follow
+											<hr>
+											{{ post.caption }}<br>
+											<p>comment 1</p>
+											<p>comment 2</p>
+											<p>comment 3</p>
+											<p>comment 4</p>
+											<p>comment 5</p>
+											<p>comment 6</p>
+											<p>comment 7</p>
+											<p>comment 8</p>
+											<p>comment 9</p>
+											<hr>
+											Like | Comment | Message | Bookmark
+											timestamp
+											<hr>
+											Emojis | Comment text field | Post comment Button
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<!-- todo if no posts -->
+			
+			</p>
+		</div>
+	{% endfor %}
