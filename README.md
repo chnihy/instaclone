@@ -1,6 +1,8 @@
 # INSTACLONE
 A simplified clone of Instagram, built using Python, Flask, Bootstrap and SQLAlchemy
 
+View a working demo <a href="https://chnihy-instaclone.herokuapp.com/">here</a>
+
 <img src="./app/static/images/github_previews/home-preview.png" alt="home preview">
 <img src="./app/static/images/github_previews/profile-preview.png" alt="profile preview">
 <img src="./app/static/images/github_previews/post-preview.png" alt="post preview">
