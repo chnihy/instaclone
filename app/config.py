@@ -11,5 +11,5 @@ class Config(object):
     
     UPLOAD_FOLDER = '/static/images/'
     AVATAR_UPLOAD_FOLDER = '/static/images/avatars/'
-    DEFAULT_AVATAR_URL = '/static/images/avatars/avatar.svg'
+    DEFAULT_AVATAR_URL = '/static/images/avatars/placeholder_small.png'
 

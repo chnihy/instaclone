@@ -75,7 +75,8 @@
   }
 
 #homefeed-myavatar{
-    clip-path: circle(20% at 50% 50%);
+    margin-top: 10%;
+    clip-path: circle(40% at 50% 50%);
   }
 
 .post-avatar{

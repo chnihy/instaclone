@@ -1,17 +1,12 @@
-<!--main column:-->
-<!--Search bar-->
-<!--Feed-->
-
-<!--right column:-->
-<!--my profile pic, link to my profile-->
-
 {% extends 'base.html' %}
 {% block title %}Instaclone{% endblock %}
 
 {% block app_content %}
 
-	<div class="row">
-		{% include 'homefeed.html' %}
+		<div class="col" id="homefeed-col">
+			{% include 'homefeed.html' %}
+		</div>
+		
 		<div class="col" id="home-mysection">
 			<div class="row align-items-center">
 				<div class="col-5">
@@ -24,5 +19,4 @@
 			</div>
 	
 		</div>
-	</div>
 {% endblock  %}
