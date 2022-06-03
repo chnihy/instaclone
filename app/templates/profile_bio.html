@@ -6,28 +6,52 @@
 		{% if user.username == current_user.username %}
 			
 		<!-- Edit Profile Modal -->
-		<div class="col" id="edit-profile">
-			<a class="btn btn-primary" href={{ url_for('edit_profile') }} type="button">Edit Profile</a>
+			<div class="col" id="edit-profile">
+				<a class="btn btn-primary" href={{ url_for('edit_profile') }} type="button">Edit Profile</a>
+			</div>
+		<!--Follow Button-->
+		{% elif current_user.is_following(user) %}
+		<div class="col" id="follow-button">
+			<form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+				{{ form.hidden_tag() }}
+				<input type="submit" value="Unfollow" class="btn btn-primary">
+			</form>
 		</div>
-		<!--end edit profile modal-->
+		{% else %}	
+			<div class="col" id="follow-button">
+				<form action="{{ url_for('follow', username=user.username) }}" method="post">
+					{{ form.hidden_tag() }}
+					<input type="submit" value="Follow" class="btn btn-primary">
+				</form>
+			</div>	
 		{% endif %}
 	</div>	
 
 	<div class="row">
 		<div class="col">
-			123 
+			{{num_posts}}
 			<br>
-			Posts
+			{% if num_posts == 1 %}
+				Post
+			{% elif num_posts == 0 or num_posts > 1 %}
+				Posts
+			{% endif %}
 		</div>
 		<div class="col">
-			999 
+			<a href="#">{{ num_followers }}</a>
 			<br>
-			Followers
+			{% if num_followers == 1 %}
+				<a href="", data-bs-toggle="modal" data-bs-target="#followersModal">Follower</a>
+			{% elif num_followers == 0 or num_followers > 1 %}
+				<a href="", data-bs-toggle="modal" data-bs-target="#followersModal">Followers</a>
+			{% endif %}
+			{% include 'followers.html' %}
 		</div>
 		<div class="col">
-			777 
+			<a href="">{{ num_following }}</a>
 			<br>
-			Folowing
+			<a href="", data-bs-toggle="modal" data-bs-target="#followingModal">Following</a>
+			{% include 'following.html' %}
 		</div>
 	</div>	
 	<div class="row" id="user-profile-text">

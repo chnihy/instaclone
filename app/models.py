@@ -7,6 +7,11 @@ from flask_login import UserMixin
 def load_user(id):
 	return User.query.get(int(id))
 
+followers = db.Table('followers',
+	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('following_id', db.Integer, db.ForeignKey('user.id'))
+)
+
 class User(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(20), unique=True, index=True, nullable=False)
@@ -20,6 +25,30 @@ class User(UserMixin, db.Model):
 
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 	comments = db.relationship('Comment', backref='author', lazy='dynamic')
+	following = db.relationship(
+		'User', secondary=followers,
+		primaryjoin=(followers.c.follower_id == id),
+		secondaryjoin=(followers.c.following_id == id),
+		backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
+	def follow(self, user):
+		if not self.is_following(user):
+			self.following.append(user)
+
+	def unfollow(self, user):
+		if self.is_following(user):
+			self.following.remove(user)
+
+	def is_following(self, user):
+		return self.following.filter(
+			followers.c.following_id == user.id).count() > 0
+			
+	def following_posts(self):
+		following = Post.query.join(
+			followers, (followers.c.following_id == Post.user_id)).filter(
+				followers.c.follower_id == self.id)
+		own = Post.query.filter_by(user_id=self.id)
+		return following.union(own).order_by(Post.timestamp.desc()) 
 
 	def __repr__(self):
 		return '<User {}> <password {}>'.format(self.username, self.password_hash)
@@ -29,6 +58,8 @@ class User(UserMixin, db.Model):
 
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
+
+
 
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +72,8 @@ class Post(db.Model):
 
 	def __repr__(self):
 		return '<Post img_url: {}> <Caption: {}'.format(self.image_url, self.caption)
+
+
 
 class Comment(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

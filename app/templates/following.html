@@ -1,0 +1,17 @@
+
+  <!-- Modal -->
+  <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="followingModalLabel">{{user.username}} is following</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			{% for follower in following %}
+				AVATAR | <a href={{ url_for('user', username=follower.username )}}>{{ follower.username }}</a>
+			{% endfor %}
+		</div>
+	  </div>
+	</div>
+  </div>

@@ -4,17 +4,18 @@ from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from app.models import User, Post, Comment
-from app.forms import LoginForm, RegistrationForm, EditProfile
+from app.forms import LoginForm, RegistrationForm, EditProfile, EmptyForm
 import os
 
 @app.shell_context_processor
 def make_shell_context():
 	return {'db': db, 'User': User, "Post": Post, "Comment": Comment}
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=["GET", "POST"])
+@app.route('/index', methods=["GET", "POST"])
 @login_required
 def index():
+	form = EmptyForm()
 	all_users = User.query.all()
 	all_posts_all_users = []
 	for user in all_users:
@@ -28,7 +29,7 @@ def index():
 		print("post author {}".format(post.author))
 		print("post timestamp {}".format(post.timestamp))'''
 
-	return render_template('index.html', all_posts_all_users=all_posts_all_users)
+	return render_template('index.html', all_posts_all_users=all_posts_all_users, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -117,12 +118,37 @@ def newpost():
 		flash('There was a problem with your upload - please try again')
 		return redirect(url_for('index'))
 
+@app.route('/new_comment', methods=["POST"])
+def new_comment():
+	form = request.form
+	comment_text = form['comment_text']
+	post_id = form['post_id']
+	#print('POST ID: {}'.format(post_id))
+	post = Post.query.get(post_id)
+
+	new_comment = Comment(body=comment_text, user_id=current_user.id, post_id=post_id)
+	db.session.add(new_comment)
+	db.session.commit()
+	flash('Your comment has been added! ')
+	return redirect(url_for('index'))
+
 @app.route('/<username>')
 @login_required
 def user(username):
+	form = EmptyForm()
 	user = User.query.filter_by(username=username).first_or_404()
 	posts = user.posts
-	return render_template('user.html', user=user, posts=user.posts)
+	
+	num_followers = len(user.followers.all())
+	num_following = len(user.following.all())
+	num_posts = len(user.posts.all())
+
+	followers = user.followers.all()
+	following = user.following.all()
+	
+	return render_template('user.html', user=user, posts=user.posts, form=form, 
+		num_followers=num_followers, num_following=num_following, num_posts=num_posts,
+		followers=followers, following=following)
 
 @app.route('/edit_profile', methods=["GET","POST"])
 @login_required
@@ -201,6 +227,45 @@ def delete_avatar():
 	db.session.add(current_user)
 	db.session.commit()
 	return redirect(url_for('user', username=current_user.username))
+
+@app.route('/follow/<username>', methods=['POST'])
+@login_required
+def follow(username):
+	form = EmptyForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(username=username).first()
+		if user is None:
+			flash('User {} not found.'.format(username))
+			return redirect(url_for('index'))
+		if user == current_user:
+			flash('You cannot follow yourself!')
+			return redirect(url_for(username))
+		current_user.follow(user)
+		db.session.commit()
+		flash('You are following {}!'.format(username))
+		return redirect(url_for('user', username=user.username))
+	else:
+		return redirect(url_for('index'))
+
+@app.route('/unfollow/<username>', methods=['POST'])
+@login_required
+def unfollow(username):
+	form = EmptyForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(username=username).first()
+		if user is None:
+			flash('User {} not found.'.format(username))
+			return redirect(url_for('index'))
+		if user == current_user:
+			flash('You cannot unfollow yourself!')
+			return redirect(url_for(username))
+		current_user.unfollow(user)
+		db.session.commit()
+		flash('You are not following {}.'.format(username))
+		return redirect(url_for('user', username=user.username))
+	else:
+		return redirect(url_for('index'))
+
 
 @app.route('/delete_post', methods=["POST"])
 def delete_post():

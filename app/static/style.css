@@ -94,6 +94,9 @@
 }
 
 .comment-field{
-    height: 40%;
+    font-size: small;
 }
 
+#post-right-sidebar{
+    text-align: left;
+}
