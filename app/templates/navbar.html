@@ -7,6 +7,7 @@
 				<img src="https://logos-download.com/wp-content/uploads/2016/03/Instagram_Logo_2016.png" alt="" width="100" height="24">
 			  </a>
 			
+			{% if current_user.is_authenticated %}
 			<!--Home-->
 			<li class="nav-item">
 				<a class="nav-link active" aria-current="page" href={{ url_for('index') }}>Home</a>
@@ -14,7 +15,6 @@
 			
 			<!--New Post-->
 
-			{% if current_user.is_authenticated %}
 				
 			<li class="nav-item">
 				
