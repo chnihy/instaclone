@@ -71,11 +71,18 @@ def register():
 		db.session.add(user)
 		db.session.commit()
 		flash('Account Created!')
-		return redirect(url_for('login'))
+		return redirect(url_for('upload_avatar'))
 	return render_template('register.html', title='Register', form=form)
 
+@app.route('/upload_avatar', methods=['GET','POST'])
+@login_required
+def upload_avatar():
+	if request.method == 'post':
+		return redirect('avatar_upload', )
+	return render_template('upload_avatar.html')
 
 @app.route('/newpost', methods=['POST'])
+@login_required
 def newpost():
 	#--- Image Upload ---#
 	def allowed_file(filename):
@@ -119,6 +126,7 @@ def newpost():
 		return redirect(url_for('index'))
 
 @app.route('/new_comment', methods=["POST"])
+@login_required
 def new_comment():
 	form = request.form
 	comment_text = form['comment_text']
@@ -181,6 +189,7 @@ def edit_profile():
 	return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 @app.route('/avatar_upload', methods=['POST'])
+@login_required
 def avatar_upload():
 	def allowed_file(filename):
 		return '.' in filename and \
@@ -219,6 +228,7 @@ def avatar_upload():
 		return redirect(url_for('index'))
 
 @app.route('/delete_avatar', methods=["POST"])
+@login_required
 def delete_avatar():
 	flash('Your profile photo has been deleted!')
 	default_avatar_url = app.config['DEFAULT_AVATAR_URL']
@@ -268,6 +278,7 @@ def unfollow(username):
 
 
 @app.route('/delete_post', methods=["POST"])
+@login_required
 def delete_post():
 	# TODO
 	print("Post ID: {}".format(request.form["post_id"]))

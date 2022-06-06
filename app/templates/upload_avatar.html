@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block app_content %}
+	<h1>Upload Your Profile Picture</h1>
+	<!--upload profile photo modal-->
+	<div class="upload_avatar_button">
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#upload-profile-photo-modal">
+		Upload
+	  </button>
+	</div>
+	<div class="modal fade" id="upload-profile-photo-modal" tabindex="-1" aria-labelledby="upload-profile-photo-modal-label" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" >
+					<h5 class="modal-title" id="upload-profile-photo-modal-label">Upload a New Photo</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<img src="../static/images/icons/upload_img.png" alt="select a file">
+					<form method=post enctype=multipart/form-data action={{ url_for('avatar_upload') }}>
+						<input type=file name=file>
+
+				</div>
+				<div class="modal-footer">
+						<input type="submit" value="Upload" class="btn btn-primary" data-bs-toggle="modal">
+					</form>
+				</div>	
+			</div>
+		</div>
+	</div>
+{% endblock app_content %}
