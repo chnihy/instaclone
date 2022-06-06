@@ -13,11 +13,15 @@
 			</li>
 			
 			<!--New Post-->
+
+			{% if current_user.is_authenticated %}
+				
 			<li class="nav-item">
 				
 					{% include 'newpost.html' %}
 					
 			</li>
+			{% endif %}
 			
 			<!--Messages
 			<li class="nav-item">
